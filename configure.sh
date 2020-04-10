@@ -14,66 +14,7 @@ rm -rf /tmp/v2ray
 install -d /usr/local/etc/v2ray
 cat << EOF > /usr/local/etc/v2ray/config.json
 {
- "inbounds": [
-    {
-      "port": 80, //推荐80端口，更好地迷惑防火墙（好吧实际上并没有什么卵用
-      "protocol": "vmess",
-      "settings": {
-        "clients": [
-          {
-            "id": "$UUID",
-            "level": 1,
-            "alterId": 64
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "tcpSettings": {
-          "header": { // header 这一项是关于数据包伪装的设置，可自定义合理的内容，但要确保服务器与客户端一致
-            "type": "http",
-            "response": {
-              "version": "1.1",
-              "status": "200",
-              "reason": "OK",
-              "headers": {
-                "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"],
-                "Transfer-Encoding": ["chunked"],
-                "Connection": ["keep-alive"],
-                "Pragma": "no-cache"
-              }
-            }
-          }
-        }
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "settings": {}
-    },
-    {
-      "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
-    }
-  ],
-  "routing": {
-    "strategy": "rules",
-    "settings": {
-      "rules": [
-        {
-          "type": "field",
-          "ip": [
-            "geoip:private"
-          ],
-          "outboundTag": "blocked"
-        }
-      ]
-    }
-  }
-}
+{ "log": { "loglevel": "warning" }, "inbound": { "protocol": "vmess", "port": 80, "settings": { "clients": [{ "id": "$UUID", "alterId": 64, "security": "chacha20-poly1305" }] }, "streamSettings": { "network": "tcp", "httpSettings": { "path": "/" }, "tcpSettings": { "header": { "type": "http", "response": { "version": "1.1", "status": "200", "reason": "OK", "headers": { "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"], "Transfer-Encoding": ["chunked"], "Connection": ["keep-alive"], "Pragma": "no-cache" } } } } } }, "inboundDetour": [], "outbound": { "protocol": "freedom", "settings": {} } }
 }
 EOF
 

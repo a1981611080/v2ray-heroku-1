@@ -27,9 +27,40 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 ],
                 "disableInsecureEncryption": true
             },
-            "streamSettings": {
-                "network": "ws"
-            }
+    "streamSettings": {
+      "network": "tcp",
+        "tcpSettings": {
+       "header": {
+         "type": "http",
+         "request": {
+        "version": "1.1",
+        "method": "GET",
+        "path": ["/"],
+        "headers": {
+          "Host": ["init.itunes.apple.com", "play.itunes.apple.com"],
+          "User-Agent": [
+         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+         "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46"
+          ],
+          "Accept-Encoding": ["gzip, deflate"],
+          "Connection": ["keep-alive"],
+          "Pragma": "no-cache"
+        }
+         },    
+         "response": {
+        "version": "1.1",
+        "status": "200",
+        "reason": "OK",
+        "headers": {
+          "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"],
+          "Transfer-Encoding": ["chunked"],
+          "Connection": ["keep-alive"],
+          "Pragma": "no-cache"
+        }
+         }
+       }
+        }
+   }
         }
     ],
     "outbounds": [
